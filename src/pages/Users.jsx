@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Skeleton from "../components/Skeleton";
 import useAdmin from "../api/useAdmin";
+import { toast } from "react-toastify";
 
 const Users = () => {
   const { getUsers, getUsersLoading, makeUserAdmin } = useAdmin();
@@ -16,6 +17,11 @@ const Users = () => {
   const makeAdmin = async (user_id) => {
     await makeUserAdmin(user_id, () => {
       fetchUsers();
+      toast.success("User is now an admin", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 2000,
+        hideProgressBar: true,
+      });
     });
   };
   return (
@@ -26,11 +32,12 @@ const Users = () => {
             key={index}
             className="flex items-center justify-between bg-white p-4 shadow-md rounded-md"
           >
-            <h2 className="text-xl font-bold">{user.username}</h2>
+            <h2 className="text-xl font-bold ">{user.username}</h2>
 
-            {user?.is_admin ? (
+            {!user?.is_admin ? (
               <svg
-                className="w-6 h-6 text-red-500 cursor-pointer"
+                style={{ cursor: "pointer" }}
+                onClick={() => makeAdmin(user?.user_id)}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -46,8 +53,7 @@ const Users = () => {
               </svg>
             ) : (
               <svg
-                onClick={() => makeAdmin(user?.user_id)}
-                className="w-6 h-6 text-red-500 cursor-pointer"
+                style={{ cursor: "not-allowed" }}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"

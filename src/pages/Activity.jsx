@@ -78,6 +78,8 @@ const renderAction = (action, data) => {
       return `User made ${data?.user?.username} note ${data?.note_id} private`;
     case "joined":
       return `User ${data?.user?.username} joined the app`;
+    case "joined_using_invite":
+      return `User ${data?.user?.username} joined the app using invite code ${data?.invite_code}`;
     default:
       return `Action`;
   }
@@ -111,6 +113,7 @@ const Activity = () => {
                 {renderAction(activity?.action, {
                   user: activity?.User,
                   note_id: activity?.note_id,
+                  invite_code: activity?.invite_code,
                 })}
               </div>
             </div>
